@@ -46,6 +46,8 @@ gem 'simple_form'
 # Include Devise version ‘>= 3.2.4’ to prevent Heroku issues
 gem 'devise', '>= 3.2.4'
 
+gem 'pry-rails'
+
 # Include factory girl and shoulda-contest for testing
 group :test do
   gem 'shoulda-context'

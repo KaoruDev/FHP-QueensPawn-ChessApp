@@ -44,44 +44,27 @@ class Game < ActiveRecord::Base
 
   def piece_causing_check(color)
     king = pieces.find_by(type: 'King', color: color)
-    opposite_color = if color == "black"
-      "white"
-    else
-      "black"
-    end
-    
-    opponents_pieces = pieces.where(color: opposite_color)
+    opponents_pieces = pieces.where(color: king.opposite_color)
+    destination = [king.x_position, king.y_position]
 
     opponents_pieces.find do |piece|
-      piece.valid_move?(king.x_position, king.y_position)
+      piece.valid_move?(*destination) && !piece.is_obstructed?(*destination)
     end
 
   end
 
-  def can_be_captured?
-    king = pieces.find_by(type: 'King')
-    pieces_remaining = pieces.where(color: king.color)
+  def can_be_captured?(piece_causing_check)
+    destination = [piece_causing_check.x_position, piece_causing_check.y_position]
 
-    pieces_remaining.each do |piece|
-      if piece.valid_move?(piece_causing_check(king.color).x_position, piece_causing_check(king.color).y_position)
-       return true 
-      end 
+    !!pieces.where(color: piece_causing_check.opposite_color).find do |piece|
+      piece.valid_move?(*destination) && !piece_causing_check.is_obstructed?(*destination)
     end
-
-    return false 
   end
 
   def checkmate?(color)
     king_in_check = pieces.find_by(type: 'King', color: color)
-
-    if check?(color)
-      if can_be_captured?
-        return false
-      end
-      return true
-    else
-      return false
-    end
+    runner = CheckmateRunner.new(my_king: king_in_check, game: self)
+    runner.verify
   end
 
 end

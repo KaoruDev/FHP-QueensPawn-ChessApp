@@ -6,7 +6,7 @@ class Pawn < Piece
     end
     x_distance = x_position - x
     y_distance = y_position - y
-    if occupied?(x, y)
+    if game.piece_at(x, y)
       if color == 'white'
         x_distance.abs == 1 && y_distance == 1
       else
@@ -25,13 +25,6 @@ class Pawn < Piece
         (x_distance == 0 && -y_distance == 1) || (x_distance == 0 && -y_distance == 2)
       end
     end
-  end
-
-  def occupied?(x, y)
-    unless game.piece_at(x, y)
-      return false
-    end
-    move_to!(x_position: x, y_position: y)
   end
 
   def to_my_image_path

@@ -24,7 +24,7 @@ class Piece < ActiveRecord::Base
 
   def vertical_obstruction?(x_destination, y_destination)
   	is_obstructed = false
-    ((self.y_position + 1)..y_destination).each do |y|
+    ((self.y_position + 1)...y_destination).each do |y|
       if game.piece_at(x_destination, y)
         is_obstructed = true
 	  	  break
@@ -34,31 +34,31 @@ class Piece < ActiveRecord::Base
   end
 
   def horizontal_obstruction?(x_destination, y_destination)
-  	is_obstructed = false
-  	((self.x_position + 1)..x_destination).each do |x|
-  		if game.piece_at(x, y_destination)
-    		is_obstructed = true
-    		break
+    is_obstructed = false
+    ((self.x_position + 1)...x_destination).each do |x|
+      if game.piece_at(x, y_destination)
+        is_obstructed = true
+        break
       end
   	end
   	is_obstructed
   end
 
   def diagonal_obstruction?(x_destination, y_destination)
-  	is_obstructed = false
-  	y_pos = (self.y_position + 1)
-  	((self.x_position + 1)..x_destination).each do |x|
-  		if game.piece_at(x, y_pos)
-    		is_obstructed = true
-    		break
+    is_obstructed = false
+    y_pos = (self.y_position + 1)
+    ((self.x_position + 1)...x_destination).each do |x|
+      if game.piece_at(x, y_pos)
+        is_obstructed = true
+        break
       end
-  		y_pos += 1
-  	end
-  	is_obstructed
+      y_pos += 1
+    end
+    is_obstructed
   end
 
-	def is_obstructed?(x_destination, y_destination)
-		return diagonal_obstruction?(x_destination, y_destination) if is_diagonal?(x_destination, y_destination)
+  def is_obstructed?(x_destination, y_destination)
+    return diagonal_obstruction?(x_destination, y_destination) if is_diagonal?(x_destination, y_destination)
     return vertical_obstruction?(x_destination, y_destination) if is_vertical?(x_destination, y_destination)
     return horizontal_obstruction?(x_destination, y_destination) if is_horizontal?(x_destination, y_destination)
     raise 'Invalid input. Not diagonal, horizontal or vertical.'
@@ -86,7 +86,11 @@ class Piece < ActiveRecord::Base
     end
     return true
   end
-  
+
+  def opposite_color
+    color == "white" ? "black" : "white"
+  end
+
   private
 
   def successful_move!(x_position: nil, y_position: nil)
