@@ -40,7 +40,7 @@ class PawnTest < ActiveSupport::TestCase
     assert_equal false, @second_black_pawn.valid_move?(2, 2)
   end
 
-  test "Invalid diagonal move, no piece to capture" do
+  test "target_me Invalid diagonal move, no piece to capture" do
     assert_equal false, @second_white_pawn.valid_move?(4, 4)
     assert_equal false, @second_white_pawn.valid_move?(6, 4)
     assert_equal false, @second_black_pawn.valid_move?(3, 3)
@@ -60,42 +60,42 @@ class PawnTest < ActiveSupport::TestCase
   end
 
   test "White pawn right diagonal move to capture black" do
-    pawn = Pawn.create(game: @game, color: 'black', x_position: 6, y_position: 4)
+    Pawn.create(game: @game, color: 'black', x_position: 6, y_position: 4)
     assert_equal true, @second_white_pawn.valid_move?(6, 4)
   end
 
   test "White pawn left diagonal move to capture black" do
-    bishop = Bishop.create(game: @game, color: 'black', x_position: 4, y_position: 4)
+     Bishop.create(game: @game, color: 'black', x_position: 4, y_position: 4)
     assert_equal true, @second_white_pawn.valid_move?(4, 4)
   end
 
   test "White pawn left diagonal move cannot capture white" do
-    rook = Rook.create(game: @game, color: 'white', x_position: 4, y_position: 4)
+    Rook.create(game: @game, color: 'white', x_position: 4, y_position: 4)
     assert_equal false, @second_white_pawn.valid_move?(4, 4)
   end
 
   test "White pawn right diagonal move cannot capure white" do
-    pawn = Pawn.create(game: @game, color: 'white', x_position: 6, y_position: 4)
+    Pawn.create(game: @game, color: 'white', x_position: 6, y_position: 4)
     assert_equal false, @second_white_pawn.valid_move?(6, 4)
   end
 
   test "Black right diagonal move to capture white" do
-    rook = Rook.create(game: @game, color: 'white', x_position: 3, y_position: 3)
+    Rook.create(game: @game, color: 'white', x_position: 3, y_position: 3)
     assert_equal true, @second_black_pawn.valid_move?(3, 3)
   end
 
   test "Black left diagonal move to capture white" do
-    pawn = Pawn.create(game: @game, color: 'white', x_position: 1, y_position: 3)
+    Pawn.create(game: @game, color: 'white', x_position: 1, y_position: 3)
     assert_equal true, @second_black_pawn.valid_move?(1, 3)
   end
 
   test "Black left diagonal move cannot capture black" do
-    bishop = Bishop.create(game: @game, color: 'black', x_position: 1, y_position: 3)
+    Bishop.create(game: @game, color: 'black', x_position: 1, y_position: 3)
     assert_equal false, @second_black_pawn.valid_move?(1, 3)
   end
 
   test "Black right diagonal move cannot capture black" do
-    pawn = Pawn.create(game: @game, color: 'black', x_position: 3, y_position: 3)
+    Pawn.create(game: @game, color: 'black', x_position: 3, y_position: 3)
     assert_equal false, @second_black_pawn.valid_move?(3, 3)
   end
 end
